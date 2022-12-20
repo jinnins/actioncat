@@ -73,8 +73,8 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
         # Add build runner commands here if you have any
-      - name: Build the APK
-        run: flutter build apk --release
+      - name: Build the App Bundle
+        run: flutter build appbundle --release
       #- name: Upload artifact to Github
       #  uses: actions/upload-artifact@v1
       #  with:
