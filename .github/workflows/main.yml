@@ -13,7 +13,7 @@ jobs:
   # 이번 실습에서는 하나의 job 만을 사용할
   # 것이기 때문에 하나의 build만 정의될 것입니다.
   build:
-    name: Running Test and CI / CD
+    name: Running Pub-Get / Test
     # 해당 작업이 실행 될 인스턴스 환경입니다.
     # 이번 실습에서는 ubuntu 를 사용할 것입니다.
     runs-on: ubuntu-latest
@@ -50,9 +50,30 @@ jobs:
       - name: Test Flutter
         run: |
           flutter test
-      
-      - name: build appbundle
-        run: flutter build appbundle
-
-      - name: build iOS
-        run: flutter build ios
+          
+  #CI
+  build_android:
+    name: Building Android 
+    runs-on: ubuntu-latest
+    needs: [Running Pub-Get / Test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 12.x
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: 2.0.1
+      - name: Install Flutter dependencies
+        run: flutter pub get
+        # Add build runner commands here if you have any
+      - name: Build the APK
+        run: flutter build apk --release
+      #- name: Upload artifact to Github
+      #  uses: actions/upload-artifact@v1
+      #  with:
+      #    name: release-apk
+      #    path: build/app/outputs/apk/release/app-release.apk
